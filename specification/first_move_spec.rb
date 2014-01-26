@@ -11,7 +11,7 @@ describe "making a move in tic tac toe" do
     @player1.post "/reset"
   end
 
-  specify "player player one makes a move" do
+  specify "player one makes a move" do
     register_user @player1, "player1", "password"
     register_user @player2, "player1", "password"
 

@@ -14,24 +14,24 @@ describe "listing open games" do
     register_user @player2, "player2", "password"
   end
 
-  specify "other players can see open games", :focus => true do
+  specify "other players can see open games" do
     expect(open_games(@player2).length).to eq(0)
     create_game @player1
     expect(open_games(@player2).length).to eq(1)
   end
 
-  specify "player cannot see his own game", :focus => true do
+  specify "player cannot see his own game" do
     create_game @player1
     expect(open_games(@player1).length).to eq(0)
   end
 
-  specify "unauthenticated players cannot see open games", :focus => true do
+  specify "unauthenticated players cannot see open games" do
     client = HttpClient.new
     client.set_host "localhost:3000"
     expect(root(client)["opengames"]).to eq(nil)
   end
 
-  specify "unauthenticated players are denied access to open games", :focus => true do
+  specify "unauthenticated players are denied access to open games" do
     client = HttpClient.new
     client.set_host "localhost:3000"
     results = client.get("/opengames")
