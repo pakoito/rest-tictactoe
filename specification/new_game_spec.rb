@@ -1,6 +1,8 @@
 require './specification/spec_helper.rb'
 
 describe "new game" do
+  include Helper
+
   before(:each) do
     @client = HttpClient.new
     @client.set_host "localhost:3000"
@@ -8,25 +10,10 @@ describe "new game" do
   end
 
   specify "option to create game is only available if user authenticates" do
-    expect(root["newgame"]).to eq(nil)
+    expect(root(@client)["newgame"]).to eq(nil)
 
-    register_user "bobby", "password"
+    register_user @client, "bobby", "password"
 
-    expect(root["newgame"]).not_to eq(nil)
-  end
-
-  def register_user username, password
-    auth = @client.get(
-      root["encode"]["url"]
-        .gsub(":username", username)
-        .gsub(":password", password))["result"]
-
-    @client.authorization = auth
-
-    @client.post "/register"
-  end
-
-  def root
-    @client.get "/"
+    expect(root(@client)["newgame"]).not_to eq(nil)
   end
 end

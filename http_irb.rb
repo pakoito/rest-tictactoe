@@ -35,8 +35,12 @@ class HttpIrb
     @client.set_host host
   end
 
-  def authorization authorization
-    @client.authorization authorization
+  def authorization= authorization
+    @client.authorization = authorization
+  end
+
+  def authorization
+    @client.authorization
   end
 
   def post path, payload

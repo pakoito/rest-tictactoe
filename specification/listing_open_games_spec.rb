@@ -1,6 +1,8 @@
 require './specification/spec_helper.rb'
 
 describe "listing open games" do
+  include Helper
+
   before(:each) do
     @player1 = HttpClient.new
     @player1.set_host "localhost:3000"
@@ -38,26 +40,5 @@ describe "listing open games" do
     expect(results["error"]).to eq("you need to register and pass in an authentication header to see this resource")
     expect(results["root"]).not_to eq(nil)
     expect(results["register"]).not_to eq(nil)
-  end
-
-  def register_user client, username, password
-    client.authorization = client.get(
-      root(client)["encode"]["url"]
-        .gsub(":username", username)
-        .gsub(":password", password))["result"]
-
-    client.post "/register"
-  end
-
-  def create_game client
-    client.post root(client)["newgame"]["url"]
-  end
-
-  def open_games client
-    client.get(root(@player2)["opengames"]["url"])["games"]
-  end
-
-  def root client
-    client.get "/"
   end
 end
