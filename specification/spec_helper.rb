@@ -10,10 +10,12 @@ end
 
 module Helper
   def register_user client, username, password
-    client.authorization = client.get(
-      root(client)["encode"]["url"]
-        .gsub(":username", username)
-        .gsub(":password", password))["result"]
+    auth = client.get(root(client)["encode"]["url"], {
+      :username => username,
+      :password => password
+    })["result"]
+
+    client.authorization = auth
 
     client.post "/register"
   end
@@ -23,7 +25,7 @@ module Helper
   end
 
   def open_games client
-    client.get(root(@player2)["opengames"]["url"])["games"]
+    client.get(root(client)["opengames"]["url"])["games"]
   end
 
   def root client
