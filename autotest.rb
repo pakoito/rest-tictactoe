@@ -1,11 +1,11 @@
-def run
+def run match
   system("cls")
   system("rspec specification")
-  puts "\ndone."
+  puts "\ndone. [#{match}]"
 end
 
-watch ('.*.rb$') { run }
-watch ('.*.js$') {
+watch ('.*.rb$') { |md| run md[0] }
+watch ('.*.js$') { |md|
   sleep 2.0
-  run
+  run md[0]
 }

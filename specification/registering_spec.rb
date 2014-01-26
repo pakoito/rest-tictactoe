@@ -1,6 +1,4 @@
-require './http_client.rb'
-require 'json'
-require 'yaml'
+require './specification/spec_helper.rb'
 
 describe "registering" do
   before(:each) do

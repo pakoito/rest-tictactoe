@@ -31,11 +31,8 @@ class HttpClient
     uri = construct_uri path
     http = Net::HTTP.new(uri.host, uri.port)
     req = Net::HTTP::Get.new(uri.path)
-    if @authorization
-      puts "authorization being sent too"
-      req["Authorization"] = "Basic #{@authorization}" 
-      req["Content-Type"] = "application/json"
-    end
+    req["Authorization"] = "Basic #{@authorization}" if @authorization
+    req["Content-Type"] = "application/json"
     response = http.request(req)
     JSON.parse(response.body)
   end

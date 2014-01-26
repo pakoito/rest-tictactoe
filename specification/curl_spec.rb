@@ -1,6 +1,4 @@
-require './http_client.rb'
-require 'json'
-require 'yaml'
+require './specification/spec_helper.rb'
 
 describe "curl" do
   specify "http/get are returned as yaml" do 
