@@ -4,6 +4,7 @@ var yaml = require('json2yaml');
 var docs = require('./controllers/docs');
 var root = require('./controllers/root');
 var games = require('./controllers/games');
+var tictactoe = require('./controllers/tictactoe');
 var authentication = require('./controllers/authentication');
 var authorize = require('./authorize');
 
@@ -38,6 +39,7 @@ authentication.init(app);
 docs.init(app);
 root.init(app);
 games.init(app);
+tictactoe.init(app);
 
 function toYaml(json) {
   return yaml.stringify(json);
