@@ -18,7 +18,7 @@ class HttpIrb
     puts "\tassuming your instance name is called 'hi'"
     puts "\tnow you can do a get (json): hi.get \"/\""
     puts "\tor a post (json): hi.post url, jsonPayload (as Hash) example: hi.post \"/profile\", { :name => \"John Doe\" }"
-    puts "\tyou can set your Authorization header too: hi.authorization value"
+    puts "\tyou can get and set your Authorization header too: hi.authorization = value"
     puts ""
   end
 
