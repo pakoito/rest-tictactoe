@@ -14,6 +14,6 @@ describe "tic toe" do
   end
 
   def get path
-    YAML.load(`curl -s http://localhost:3000#{path}`)
+    YAML.load(`curl -s "http://localhost:3000#{path}"`)
   end
 end
