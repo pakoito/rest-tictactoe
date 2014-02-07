@@ -1,63 +1,69 @@
 var _ = require('underscore');
 var querystring = require('querystring');
+var availableMoves = {
+  topleft: { row: 0, col: 0 },
+  topmiddle: { row: 0, col: 1 }
+};
 
 function toString(board) {
-  var stringBoard = [];
+  var stringBoard = [
+    [".", ".", "."],
+    [".", ".", "."],
+    [".", ".", "."],
+  ];
 
-  _.each(board, function(row) {
-    stringBoard.push(row.join(""));
+  _.each(board, function(entry, key) {
+    var loc = availableMoves[key];
+    stringBoard[loc.row][loc.col] = entry;
   });
 
-  return stringBoard;
+  return _.map(stringBoard, function(row) {
+    return row.join("");
+  });
 }
 
 function turn(board) {
-  var x = 0;
-  var o = 0;
+  var counts = _.chain(board)
+    .countBy(function(entry) {
+      return entry == 'x' ? 'x' : 'o';
+    })
+    .defaults({ x: 0, o: 0 })
+    .value();
 
-  _.each(_.flatten(board), function(entry) {
-    if(entry == "x") x += 1;
-    if(entry == "o") o += 1;
-  });
+  if(counts.x == counts.o) return "x";
 
-  if(x == o) return "x";
+  return "o";
+}
 
-  return 'o';
+function variations(board) {
+  return _.chain(availableMoves)
+    .keys()
+    .reject(function(key) { return board[key]; })
+    .map(function(key) {
+      var nextMove = _.clone(board);
+      nextMove[key] = turn(board);
+      return [key, nextMove];
+    })
+    .object()
+    .value();
+
+  return moves;
+}
+
+function linksFor(board) {
+  return _.chain(variations(board))
+    .map(function(entry, key) {
+      return [key, "/tictactoe?" + querystring.stringify(entry)];
+    })
+    .object()
+    .value();
 }
 
 function init(app) {
   app.get('/tictactoe', function(req, res) {
-    var board = [
-      [".", ".", "."],
-      [".", ".", "."],
-      [".", ".", "."],
-    ];
-
-    var availableMoves = {
-      topleft: { row: 0, col: 0 },
-      topmiddle: { row: 0, col: 1 }
-    };
-
-    for(var key in availableMoves) {
-      var move = availableMoves[key];
-      if(req.params[key]) {
-        board[move.row][move.col] = req.params[key];
-      }
-    }
-
-    var moves = { };
-
-    for(var key in availableMoves) {
-      var nextMove = JSON.parse(JSON.stringify(req.params));
-      nextMove[key] = turn(board);
-      if(!req.params[key]) {
-        moves[key] = "/tictactoe?" + querystring.stringify(nextMove);
-      }
-    };
-
     res.send({
-      board: toString(board),
-      moves: moves
+      board: toString(req.params),
+      moves: linksFor(req.params)
     });
   });
 }

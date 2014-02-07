@@ -1,7 +1,7 @@
 require './specification/spec_helper.rb'
 
 describe "tic toe" do
-  it "moves that have been taken are no longer available", :focus => true do
+  specify "moves that have been taken are no longer available", :focus => true do
     yaml = get "/tictactoe"
 
     expect(yaml["board"][0]).to eq("...")
@@ -16,7 +16,7 @@ describe "tic toe" do
     expect(yaml["moves"]["topleft"]).to eq(nil)
   end
 
-  it "works", :focus => true do
+  specify "x's and o's alternate on the board", :focus => true do
     yaml = get "/tictactoe"
     yaml = get yaml["moves"]["topleft"]
     yaml = get yaml["moves"]["topmiddle"]
