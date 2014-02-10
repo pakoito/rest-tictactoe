@@ -30,6 +30,8 @@ function turn(board) {
     .defaults({ x: 0, o: 0 })
     .value();
 
+  //return counts.x == counts.o ? 'x' : 'o';
+
   if(counts.x == counts.o) return "x";
 
   return "o";
@@ -51,6 +53,19 @@ function variations(board) {
 }
 
 function linksFor(board) {
+  //return _.reduce(_.pairs(variations(board)), function(links, pair) {
+  //  links[pair[0]] = "/tictactoe?" + querystring.stringify(pair[1]);
+  //  return links;
+  //  }, {});
+
+  //return _.chain(variations(board))
+  //  .pairs()
+  //  .reduce(function(links, pair) {
+  //    links[pair[0]] = "/tictactoe?" + querystring.stringify(pair[1]);
+  //    return links;
+  //  }, {})
+  //  .value();
+
   return _.chain(variations(board))
     .map(function(entry, key) {
       return [key, "/tictactoe?" + querystring.stringify(entry)];
