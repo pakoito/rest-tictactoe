@@ -25,7 +25,7 @@ module Helper
   end
 
   def open_games client
-    client.get(root(client)["opengames"]["url"])["games"]
+    client.get(root(client)["opengames"]["url"])
   end
 
   def root client
@@ -36,6 +36,7 @@ module Helper
     if json["error"]
       puts json ["error"]
     else
+      puts json
       puts JSON.pretty_generate(json)
     end
   end

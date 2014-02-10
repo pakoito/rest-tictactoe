@@ -14,11 +14,9 @@ describe "making a move in tic tac toe" do
   end
 
   xspecify "player one makes a move" do
-    register_user @player1, "player1", "password"
-    register_user @player2, "player1", "password"
+    register_user @player1, "bobby", "password"
+    register_user @player2, "timmy", "password"
 
-    @player1.post root(@player1)["newgame"]["url"]
-
-    @player1.post root(@player2)["opengames"].first["join"]
+    fail
   end
 end

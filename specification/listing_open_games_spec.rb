@@ -17,14 +17,14 @@ describe "listing open games" do
   end
 
   specify "other players can see open games" do
-    expect(open_games(@player2).length).to eq(0)
+    expect(open_games(@player2)["games"].length).to eq(0)
     create_game @player1
-    expect(open_games(@player2).length).to eq(1)
+    expect(open_games(@player2)["games"].length).to eq(1)
   end
 
   specify "player cannot see his own game" do
     create_game @player1
-    expect(open_games(@player1).length).to eq(0)
+    expect(open_games(@player1)["games"].length).to eq(0)
   end
 
   specify "unauthenticated players cannot see open games" do
