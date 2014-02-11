@@ -6,12 +6,19 @@ var root = require('./controllers/root');
 var games = require('./controllers/games');
 var tictactoe = require('./controllers/tictactoe');
 var authentication = require('./controllers/authentication');
-var authorize = require('./authorize');
 
 var app = restify.createServer({
   name: 'rest-tictactoe',
   version: '1.0.0'
 });
+
+function toYaml(json) {
+  return yaml.stringify(json);
+}
+
+function isCurl(req) {
+  return req.headers["user-agent"].match(/curl/);
+}
 
 app.formatters['text/plain'] = function(req, res, body) {
   return toYaml(body);
@@ -40,14 +47,6 @@ docs.init(app);
 root.init(app);
 games.init(app);
 tictactoe.init(app);
-
-function toYaml(json) {
-  return yaml.stringify(json);
-}
-
-function isCurl(req) {
-  return req.headers["user-agent"].match(/curl/);
-}
 
 app.post('/reset', function(req, res) {
   games.reset();

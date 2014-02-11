@@ -1,4 +1,4 @@
-var authorize = require('../authorize');
+var authorize = require('../filters/authorize');
 var games = [];
 var _ = require('underscore');
 
@@ -13,7 +13,7 @@ function init(app) {
     res.send({ games: openGames(req.authorization.basic.username) });
   });
 
-  app.post('/new', function(req, res) {
+  app.post('/new', authorize.filter, function(req, res) {
     var game = { };
     games.push({ player1: req.authorization.basic.username });
     res.send({ });
