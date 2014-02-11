@@ -27,9 +27,10 @@ describe "listing open games" do
     expect(open_games(@player1)["games"].length).to eq(0)
   end
 
-  specify "unauthenticated players cannot see open games" do
+  specify "unregistered players cannot see open games" do
     client = HttpClient.new
     client.set_host "localhost:3000"
+    client.authorization = encode(client, "noone", "password")
     expect(root(client)["opengames"]).to eq(nil)
   end
 

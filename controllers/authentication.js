@@ -10,8 +10,8 @@ function usernameTaken(username) {
 function isAuthenticated(req) {
   if(!req.authorization.basic) return false;
 
-  return !!_.filter(users, function(user) {
-    return user.username == req.authorization.basic.username && user.password == req.authorization.password;
+  return !!_.find(users, function(user) {
+    return user.username == req.authorization.basic.username && user.password == req.authorization.basic.password;
   });
 }
 

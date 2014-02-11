@@ -10,14 +10,16 @@ end
 
 module Helper
   def register_user client, username, password
-    auth = client.get(root(client)["encode"]["url"], {
+    client.authorization = encode(client, username, password)
+
+    client.post "/register"
+  end
+
+  def encode client, username, password
+    client.get(root(client)["encode"]["url"], {
       :username => username,
       :password => password
     })["result"]
-
-    client.authorization = auth
-
-    client.post "/register"
   end
 
   def create_game client
