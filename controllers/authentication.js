@@ -32,6 +32,13 @@ function init(app) {
       res.send(user);
     }
   });
+
+  app.get('/encode/:username/:password', function(req, res) {
+    res.send({
+      result: new Buffer(req.params.username + ":" + req.params.password).toString('base64'),
+      params: req.params
+    });
+  });
 }
 
 function reset() {

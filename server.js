@@ -1,10 +1,10 @@
 var restify = require('restify');
-var _ = require('underscore');
 var yaml = require('json2yaml');
 var docs = require('./controllers/docs');
 var root = require('./controllers/root');
 var games = require('./controllers/games');
 var tictactoe = require('./controllers/tictactoe');
+var dev = require('./controllers/dev');
 var authentication = require('./controllers/authentication');
 
 var app = restify.createServer({
@@ -12,26 +12,18 @@ var app = restify.createServer({
   version: '1.0.0'
 });
 
-function toYaml(json) {
-  return yaml.stringify(json);
-}
-
-function isCurl(req) {
-  return req.headers["user-agent"].match(/curl/);
-}
-
 app.formatters['text/plain'] = function(req, res, body) {
-  return toYaml(body);
+  return yaml.stringify(body);
 };
 
-app.use(restify.acceptParser(app.acceptable));
 app.use(restify.queryParser());
 app.use(restify.bodyParser());
 app.use(restify.authorizationParser());
 
 app.use(function(req, res, next) {
-  if(isCurl(req) && req.headers.accept == "*/*") {
-    req.headers.accept = "text/plain";
+  if(req.headers["user-agent"].match(/curl/) &&
+    req.headers.accept == "*/*") {
+    res.setHeader('content-type', 'text/plain');
   }
 
   return next();
@@ -47,19 +39,7 @@ docs.init(app);
 root.init(app);
 games.init(app);
 tictactoe.init(app);
-
-app.post('/reset', function(req, res) {
-  games.reset();
-  authentication.reset();
-  res.send({ });
-});
-
-app.get('/encode/:username/:password', function(req, res) {
-  res.send({
-    result: new Buffer(req.params.username + ":" + req.params.password).toString('base64'),
-    params: req.params
-  });
-});
+dev.init(app);
 
 app.listen(3000, function () {
   console.log('%s listening at %s', app.name, app.url);
