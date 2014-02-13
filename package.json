@@ -4,7 +4,8 @@
   "dependencies": {
     "restify": "~2.6.1",
     "underscore": "~1.5.2",
-    "json2yaml": "~1.0.3"
+    "json2yaml": "~1.0.3",
+    "node-uuid": "~1.4.1"
   },
   "engines": {
     "node": "0.10.x"

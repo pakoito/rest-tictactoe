@@ -32,6 +32,11 @@ function init(app) {
         method: 'get',
         url: '/opengames'
       };
+
+      urls.engine = {
+        method: 'get',
+        url: '/tictactoe'
+      };
     }
 
     res.send(urls);
