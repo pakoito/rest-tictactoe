@@ -41,6 +41,8 @@ module Helper
       puts json
       puts JSON.pretty_generate(json)
     end
+
+    json
   end
 end
 

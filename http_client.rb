@@ -15,7 +15,7 @@ class HttpClient
   def post path, payload = { }
     uri = construct_uri path 
     http = Net::HTTP.new(uri.host, uri.port)
-    req = Net::HTTP::Post.new(uri.path)
+    req = Net::HTTP::Post.new(uri.request_uri)
     req.body = payload.to_json
     req["Authorization"] = "Basic #{@authorization}" if @authorization
     req["Content-Type"] = "application/json"
@@ -30,7 +30,7 @@ class HttpClient
 
     uri = construct_uri path
     http = Net::HTTP.new(uri.host, uri.port)
-    req = Net::HTTP::Get.new(uri.path)
+    req = Net::HTTP::Get.new(uri.request_uri)
     req["Authorization"] = "Basic #{@authorization}" if @authorization
     req["Content-Type"] = "application/json"
     response = http.request(req)

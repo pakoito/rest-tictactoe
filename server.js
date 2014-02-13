@@ -16,10 +16,6 @@ app.formatters['text/plain'] = function(req, res, body) {
   return yaml.stringify(body);
 };
 
-app.use(restify.queryParser());
-app.use(restify.bodyParser());
-app.use(restify.authorizationParser());
-
 app.use(function(req, res, next) {
   if(req.headers["user-agent"].match(/curl/) &&
     req.headers.accept == "*/*") {
@@ -28,6 +24,9 @@ app.use(function(req, res, next) {
 
   return next();
 });
+
+app.use(restify.queryParser());
+app.use(restify.bodyParser());
 
 app.on('uncaughtException', function(req, res, route, err) {
   console.log(err.stack);

@@ -1,10 +1,11 @@
 var _ = require('underscore');
 var users = [];
+var restify = require('restify');
 
 function usernameTaken(username) {
   return _.find(users, function(user) { 
     return user.username == username;
-  })
+  });
 }
 
 function isAuthenticated(req) {
@@ -16,6 +17,8 @@ function isAuthenticated(req) {
 }
 
 function init(app) {
+  app.use(restify.authorizationParser());
+
   app.use(function(req, res, next) {
     req.isAuthenticated = isAuthenticated(req);
     return next();
