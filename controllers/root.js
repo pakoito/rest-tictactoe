@@ -37,6 +37,11 @@ function init(app) {
         method: 'get',
         url: '/tictactoe'
       };
+
+      urls.inprogress = {
+        method: 'get',
+        url: '/inprogress'
+      };
     }
 
     res.send(urls);

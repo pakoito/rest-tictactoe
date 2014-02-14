@@ -11,18 +11,25 @@ describe "join game" do
     @player2.set_host "localhost:3000"
 
     @player1.post "/reset"
-  end
 
-  it "works", :focus => true do
     register_user @player1, "bobby", "password"
     register_user @player2, "timmy", "password"
 
     create_game @player1
 
-    puts open_games(@player2)["games"]
-
     @player2.post open_games(@player2)["games"][0]["join"]["url"]
+  end
 
+  specify "game is removed from open game list", :focus => true do
     expect(open_games(@player2)["games"].count).to eq(0)
+  end
+
+  specify "games show up in their 'inprogess' queues", :focus => true do
+    expect(inprogress_games(@player1)["games"].count).to eq(1)
+    expect(inprogress_games(@player2)["games"].count).to eq(1)
+  end
+
+  def inprogress_games client
+    client.get(root(client)["inprogress"]["url"])
   end
 end
