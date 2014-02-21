@@ -8,7 +8,7 @@ describe "tic toe" do
     expect(yaml["board"][1]).to eq("...")
     expect(yaml["board"][2]).to eq("...")
 
-    yaml = get yaml["moves"]["topleft"]
+    yaml = get yaml["moves"]["topleft"]["url"]
     
     expect(yaml["board"][0]).to eq("x..")
     expect(yaml["board"][1]).to eq("...")
@@ -18,8 +18,8 @@ describe "tic toe" do
 
   specify "x's and o's alternate on the board" do
     yaml = get "/tictactoe"
-    yaml = get yaml["moves"]["topleft"]
-    yaml = get yaml["moves"]["topmiddle"]
+    yaml = get yaml["moves"]["topleft"]["url"]
+    yaml = get yaml["moves"]["topmiddle"]["url"]
 
     expect(yaml["board"][0]).to eq("xo.")
     expect(yaml["board"][1]).to eq("...")

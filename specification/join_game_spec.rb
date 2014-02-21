@@ -20,11 +20,11 @@ describe "join game" do
     @player2.post open_games(@player2)["games"][0]["join"]["url"]
   end
 
-  specify "game is removed from open game list", :focus => true do
+  specify "game is removed from open game list" do
     expect(open_games(@player2)["games"].count).to eq(0)
   end
 
-  specify "games show up in their 'inprogess' queues", :focus => true do
+  specify "games show up in their 'inprogess' queues" do
     expect(inprogress_games(@player1)["games"].count).to eq(1)
     expect(inprogress_games(@player2)["games"].count).to eq(1)
   end

@@ -68,7 +68,7 @@ function linksFor(board) {
 
   return _.chain(variations(board))
     .map(function(entry, key) {
-      return [key, "/tictactoe?" + querystring.stringify(entry)];
+      return [key, { method: "get", url: "/tictactoe?" + querystring.stringify(entry) }];
     })
     .object()
     .value();
