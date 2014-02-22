@@ -1,6 +1,6 @@
 require './specification/spec_helper.rb'
 
-describe "tic toe" do
+describe "tic toe", :focus => true do
   specify "moves that have been taken are no longer available" do
     yaml = get "/tictactoe"
 
