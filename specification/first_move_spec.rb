@@ -13,12 +13,16 @@ describe "making a move in tic tac toe" do
     @player1.post "/reset"
   end
 
-  specify "player one makes a move" do
+  specify "it works", :focus => true do
     register_user @player1, "bobby", "password"
     register_user @player2, "timmy", "password"
 
     create_game @player1
 
-    @player2.post open_games(@player2)["games"].first["join"]["url"]
+    print inprogress_games(@player1)
+
+    join_game @player2, open_games(@player2)["games"].first
+
+    print inprogress_games(@player1)
   end
 end

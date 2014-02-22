@@ -17,7 +17,7 @@ describe "join game" do
 
     create_game @player1
 
-    @player2.post open_games(@player2)["games"][0]["join"]["url"]
+    join_game @player2, open_games(@player2)["games"].first
   end
 
   specify "game is removed from open game list" do
@@ -27,9 +27,5 @@ describe "join game" do
   specify "games show up in their 'inprogess' queues" do
     expect(inprogress_games(@player1)["games"].count).to eq(1)
     expect(inprogress_games(@player2)["games"].count).to eq(1)
-  end
-
-  def inprogress_games client
-    client.get(root(client)["inprogress"]["url"])
   end
 end

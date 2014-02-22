@@ -34,6 +34,14 @@ module Helper
     client.get "/"
   end
 
+  def inprogress_games client
+    client.get(root(client)["inprogress"]["url"])
+  end
+
+  def join_game client, game
+    client.post game["join"]["url"]
+  end
+
   def print json
     if json["error"]
       puts json ["error"]
