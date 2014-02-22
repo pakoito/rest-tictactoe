@@ -10,9 +10,7 @@ function openGames(username) {
 }
 
 function findGame(id) {
-  return _.find(games, function(game) {
-    return game.id == id;
-  });
+  return _.findWhere(games, { id: id });
 }
 
 function gamesForUser(username) {
