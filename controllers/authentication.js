@@ -12,7 +12,7 @@ function isAuthenticated(req) {
   if(!req.authorization.basic) return false;
 
   return !!_.find(users, function(user) {
-    return user.username == req.authorization.basic.username && user.password == req.authorization.basic.password;
+    return user.username == req.username && user.password == req.authorization.basic.password;
   });
 }
 
@@ -25,7 +25,7 @@ function init(app) {
   });
 
   app.post('/register', function(req, res) {
-    var u = req.authorization.basic.username;
+    var u = req.username;
     if(usernameTaken(u)) {
       res.send({ error: "username unavailable" });
     } else {

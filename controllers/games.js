@@ -15,10 +15,6 @@ function findGame(id) {
   });
 }
 
-function username(req) {
-  return req.authorization.basic.username;
-}
-
 function gamesForUser(username) {
   return _.filter(games, function(game) {
     return game.player1 == username || game.player2 == username 
@@ -27,7 +23,7 @@ function gamesForUser(username) {
 
 function init(app) {
   app.get('/opengames', authorize.filter, function(req, res) {
-    var open = openGames(username(req));
+    var open = openGames(req.username);
 
     open = _.map(open, _.clone);
 
@@ -41,13 +37,13 @@ function init(app) {
   });
 
   app.post('/join', function(req, res) {
-    findGame(req.params.id).player2 = req.authorization.basic.username;
+    findGame(req.params.id).player2 = req.username;
 
     res.send({ });
   });
 
   app.get('/inprogress', function(req, res) {
-    var inprogress = gamesForUser(req.authorization.basic.username);
+    var inprogress = gamesForUser(req.username);
 
     res.send({ games: inprogress });
   });
@@ -55,7 +51,7 @@ function init(app) {
   app.post('/new', authorize.filter, function(req, res) {
     var game = {
       id: uuid.v1(),
-      player1: req.authorization.basic.username
+      player1: req.username
     };
     games.push(game);
     res.send({ });

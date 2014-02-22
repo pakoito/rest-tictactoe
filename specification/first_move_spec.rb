@@ -13,14 +13,12 @@ describe "making a move in tic tac toe" do
     @player1.post "/reset"
   end
 
-  xspecify "player one makes a move" do
+  specify "player one makes a move" do
     register_user @player1, "bobby", "password"
     register_user @player2, "timmy", "password"
 
     create_game @player1
 
     @player2.post open_games(@player2)["games"].first["join"]["url"]
-
-    expect(open_games(@player2)["games"].length).to eq(0)
   end
 end
