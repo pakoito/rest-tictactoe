@@ -30,6 +30,12 @@ function linksFor(board) {
     .value();
 }
 
+function currentTurn(game) {
+  if(engine.turn(game.board) == "x") return game.player1;
+
+  return game.player2;
+}
+
 function init(app) {
   app.get('/opengames', authorize.filter, function(req, res) {
     var open = openGames(req.username);
@@ -55,7 +61,9 @@ function init(app) {
     inprogress = _.map(inprogress, _.clone);
 
     _.each(inprogress, function(game) {
-      game.turn = linksFor(game.board);
+      if(currentTurn(game) == req.username) {
+        game.turn = linksFor(game.board);
+      }
     });
     
     res.send({ games: inprogress });
