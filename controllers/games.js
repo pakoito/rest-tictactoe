@@ -55,6 +55,12 @@ function init(app) {
     res.send({ });
   });
 
+  app.post('/move', function(req, res) {
+    console.log('todo');
+    
+    res.send({ });
+  });
+
   app.get('/inprogress', function(req, res) {
     var inprogress = gamesForUser(req.username);
 

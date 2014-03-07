@@ -19,15 +19,19 @@ describe "making a move in tic tac toe" do
 
     create_game @player1
 
-    print inprogress_games(@player1)
-
     join_game @player2, open_games(@player2)["games"].first
-
-    print inprogress_games(@player1)
 
     expect(first_inprogress_game(@player1)["turn"]["topleft"]).not_to eq(nil)
 
     expect(first_inprogress_game(@player2)["turn"]).to eq(nil)
+
+    print inprogress_games(@player1)
+
+    @player1.post first_inprogress_game(@player1)["turn"]["topleft"]["url"]
+
+    expect(first_inprogress_game(@player1)["turn"]).to eq(nil)
+
+    expect(first_inprogress_game(@player2)["turn"]["topmiddle"]).not_to eq(nil)
   end
 
   def first_inprogress_game(player) 
