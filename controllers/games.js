@@ -2,6 +2,8 @@ var authorize = require('../filters/authorize');
 var games = [];
 var _ = require('underscore');
 var uuid = require('node-uuid');
+var engine = require('../models/engine');
+var querystring = require('querystring');
 
 function openGames(username) {
   return _.reject(games, function(game) {
@@ -19,6 +21,15 @@ function gamesForUser(username) {
   });
 }
 
+function linksFor(board) {
+  return _.chain(engine.variations(board))
+    .map(function(entry, key) {
+      return [key, { method: "post", url: "/move?" + querystring.stringify(entry) }];
+    })
+    .object()
+    .value();
+}
+
 function init(app) {
   app.get('/opengames', authorize.filter, function(req, res) {
     var open = openGames(req.username);
@@ -29,9 +40,7 @@ function init(app) {
       g.join = { method: "post", url: "/join?id=" + g.id }
     });
     
-    res.send({
-      games: open
-    });
+    res.send({ games: open });
   });
 
   app.post('/join', function(req, res) {
@@ -43,13 +52,20 @@ function init(app) {
   app.get('/inprogress', function(req, res) {
     var inprogress = gamesForUser(req.username);
 
+    inprogress = _.map(inprogress, _.clone);
+
+    _.each(inprogress, function(game) {
+      game.turn = linksFor(game.board);
+    });
+    
     res.send({ games: inprogress });
   });
 
   app.post('/new', authorize.filter, function(req, res) {
     var game = {
       id: uuid.v1(),
-      player1: req.username
+      player1: req.username,
+      board: { }
     };
     games.push(game);
     res.send({ });

@@ -25,6 +25,10 @@ describe "making a move in tic tac toe" do
 
     print inprogress_games(@player1)
 
-    expect(inprogress_games(@player1)["games"][0]["turn"]["topleft"]).not_to eq(nil)
+    expect(first_inprogress_game(@player1)["turn"]["topleft"]).not_to eq(nil)
+  end
+
+  def first_inprogress_game(player) 
+    inprogress_games(player)["games"][0]
   end
 end
