@@ -24,5 +24,7 @@ describe "making a move in tic tac toe" do
     join_game @player2, open_games(@player2)["games"].first
 
     print inprogress_games(@player1)
+
+    expect(inprogress_games(@player1)["games"][0]["turn"]["topleft"]).not_to eq(nil)
   end
 end
