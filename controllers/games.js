@@ -21,9 +21,10 @@ function gamesForUser(username) {
   });
 }
 
-function linksFor(board) {
-  return _.chain(engine.variations(board))
+function linksFor(game) {
+  return _.chain(engine.variations(game.board))
     .map(function(entry, key) {
+      entry.id = game.id;
       return [key, { method: "post", url: "/move?" + querystring.stringify(entry) }];
     })
     .object()
@@ -56,8 +57,10 @@ function init(app) {
   });
 
   app.post('/move', function(req, res) {
-    console.log('todo');
-    
+    var game = findGame(req.params.id);
+
+    game.board = _.pick(req.params, _.keys(engine.availableMoves));
+
     res.send({ });
   });
 
@@ -68,7 +71,7 @@ function init(app) {
 
     _.each(inprogress, function(game) {
       if(currentTurn(game) == req.username) {
-        game.turn = linksFor(game.board);
+        game.turn = linksFor(game);
       }
     });
     
