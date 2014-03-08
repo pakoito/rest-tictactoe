@@ -11,30 +11,37 @@ describe "making a move in tic tac toe" do
     @player2.set_host "localhost:3000"
 
     @player1.post "/reset"
-  end
 
-  specify "it works", :focus => true do
     register_user @player1, "bobby", "password"
     register_user @player2, "timmy", "password"
-
     create_game @player1
-
     join_game @player2, open_games(@player2)["games"].first
+  end
 
-    expect(first_inprogress_game(@player1)["turn"]["topleft"]).not_to eq(nil)
+  specify "each player makes an alternating move", :focus => true do
+    expect(has_turn(@player1)).to eq(true)
+    expect(has_turn(@player2)).to eq(false)
 
-    expect(first_inprogress_game(@player2)["turn"]).to eq(nil)
+    make_move(@player1, "topleft")
 
-    print inprogress_games(@player1)
+    expect(has_turn(@player1)).to eq(false)
+    expect(has_turn(@player2)).to eq(true)
 
-    @player1.post first_inprogress_game(@player1)["turn"]["topleft"]["url"]
+    make_move(@player2, "topmiddle")
 
-    expect(first_inprogress_game(@player1)["turn"]).to eq(nil)
+    expect(has_turn(@player1)).to eq(true)
+    expect(has_turn(@player2)).to eq(false)
+  end
 
-    expect(first_inprogress_game(@player2)["turn"]["topmiddle"]).not_to eq(nil)
+  def make_move(player, location) 
+    player.post first_inprogress_game(player)["turn"][location]["url"]
   end
 
   def first_inprogress_game(player) 
     inprogress_games(player)["games"][0]
+  end
+
+  def has_turn(player)
+    !!first_inprogress_game(player)["turn"]
   end
 end
