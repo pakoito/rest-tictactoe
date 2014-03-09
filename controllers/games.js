@@ -55,6 +55,16 @@ function join(req, res) {
   res.send({ });
 }
 
+function move(req, res) {
+  var game = findGame(req.params.id);
+
+  var newMoves = _.pick(req.params, _.keys(engine.availableMoves));
+
+  game.board = _.extend(game.board, newMoves);
+
+  res.send({ });
+}
+
 function init(app) {
   app.get('/opengames', authorize.filter, function(req, res) {
     var open = openGames(req.username);
@@ -70,13 +80,7 @@ function init(app) {
 
   app.post('/join', join);
 
-  app.post('/move', function(req, res) {
-    var game = findGame(req.params.id);
-
-    game.board = _.pick(req.params, _.keys(engine.availableMoves));
-
-    res.send({ });
-  });
+  app.post('/move', move);
 
   app.get('/inprogress', function(req, res) {
     var inprogress = gamesForUser(req.username);
@@ -103,4 +107,6 @@ exports.init = init;
 exports.reset = reset;
 exports.newGame = newGame;
 exports.games = function() { return games; }
+exports.linksFor = linksFor;
 exports.join = join;
+exports.move = move;
