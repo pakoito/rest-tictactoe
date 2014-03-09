@@ -1,17 +1,31 @@
 var games = require('../controllers/games');
 var _ = require('underscore');
 
-var req = { send: function() { } };
+var res = { send: function() { } };
 
 describe('two players playing tic tac toe', function() {
   it('works', function() {
-    var game = games.newGame({ username: "player1" }, req);
+    var game = games.newGame({ username: "player1" }, res);
 
     games.join({
       params: { id: game.id },
       username: "player2"
-    }, req);
+    }, res);
 
-    console.log(games.games());
+    games.move({
+      params: {
+        id: game.id,
+        topleft: 'x'
+      }
+    }, res);
+
+    games.move({
+      params: {
+        id: game.id,
+        topmiddle: 'o'
+      }
+    }, res);
+
+    console.log(game);
   });
 });
