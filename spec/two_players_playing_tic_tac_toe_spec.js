@@ -26,6 +26,13 @@ describe('two players playing tic tac toe', function() {
       }
     }, res);
 
-    console.log(game);
+    games.move({
+      params: {
+        id: game.id,
+        topright: 'x'
+      }
+    }, res);
+
+    expect(game.board.topright).toEqual('x');
   });
 });
