@@ -1,7 +1,8 @@
 var _ = require('underscore');
 var availableMoves = {
   topleft: { row: 0, col: 0 },
-  topmiddle: { row: 0, col: 1 }
+  topmiddle: { row: 0, col: 1 }, 
+  topright: { }
 };
 
 function turn(board) {
