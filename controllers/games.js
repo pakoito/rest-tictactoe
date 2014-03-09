@@ -37,6 +37,24 @@ function currentTurn(game) {
   return game.player2;
 }
 
+function newGame(req, res) {
+  var game = {
+    id: uuid.v1(),
+    player1: req.username,
+    board: { }
+  };
+
+  games.push(game);
+  res.send({ });
+  return game;
+}
+
+function join(req, res) {
+  findGame(req.params.id).player2 = req.username;
+
+  res.send({ });
+}
+
 function init(app) {
   app.get('/opengames', authorize.filter, function(req, res) {
     var open = openGames(req.username);
@@ -50,11 +68,7 @@ function init(app) {
     res.send({ games: open });
   });
 
-  app.post('/join', function(req, res) {
-    findGame(req.params.id).player2 = req.username;
-
-    res.send({ });
-  });
+  app.post('/join', join);
 
   app.post('/move', function(req, res) {
     var game = findGame(req.params.id);
@@ -78,15 +92,7 @@ function init(app) {
     res.send({ games: inprogress });
   });
 
-  app.post('/new', authorize.filter, function(req, res) {
-    var game = {
-      id: uuid.v1(),
-      player1: req.username,
-      board: { }
-    };
-    games.push(game);
-    res.send({ });
-  });
+  app.post('/new', authorize.filter, newGame);
 }
 
 function reset() {
@@ -95,3 +101,6 @@ function reset() {
 
 exports.init = init;
 exports.reset = reset;
+exports.newGame = newGame;
+exports.games = function() { return games; }
+exports.join = join;
