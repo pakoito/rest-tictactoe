@@ -18,7 +18,7 @@ describe "making a move in tic tac toe" do
     join_game @player2, open_games(@player2)["games"].first
   end
 
-  specify "each player makes an alternating move", :focus => true do
+  specify "each player makes an alternating move" do
     expect(has_turn(@player1)).to eq(true)
     expect(has_turn(@player2)).to eq(false)
 

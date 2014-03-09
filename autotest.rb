@@ -1,6 +1,7 @@
 def run match
   system("cls")
   system("rspec specification")
+  system("jasmine-node .")
   puts "\ndone. [#{match}]"
 end
 

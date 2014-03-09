@@ -5,7 +5,8 @@
     "restify": "~2.6.1",
     "underscore": "~1.5.2",
     "json2yaml": "~1.0.3",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "jasmine-node": "~1.14.2"
   },
   "engines": {
     "node": "0.10.x"
